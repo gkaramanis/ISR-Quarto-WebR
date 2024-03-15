@@ -1,0 +1,307 @@
+---
+title: ggplot2 workshop
+subtitle: Georgios Karamanis
+format: 
+  revealjs:
+    header-includes: '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Sofia+Sans+Extra+Condensed:ital,wght@0,1..1000;1,1..1000&display=swap" rel="stylesheet">'
+    mainfont: Outfit
+    code-overflow: wrap
+    smaller: true
+    scrollable: true
+execute: 
+  freeze: auto
+filters:
+  - webr
+webr: 
+  show-startup-message: true
+  packages: ["ggplot2"]
+---
+
+For the exercises we will use two datasets,  [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/) and [friends_info](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-08/readme.md)
+
+::: columns
+![](images/lter_penguins.png){width="30%"} ![](images/culmen_depth.png){width="30%"} 
+![](images/friends.jpg){width="60%"}
+:::
+
+```{webr-r}
+#| context: setup
+#| include: false
+#| cache: true
+#| autorun: true
+
+palmerpenguins <- read.csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-28/penguins.csv")
+
+friends_info <- read.csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-08/friends_info.csv')
+
+friends_info$air_date <- as.Date(friends_info$air_date)
+```
+
+------------------------------------------------------------------------
+
+Before plotting, let's have a look at different ways to view datasets
+
+```{webr-r}
+palmerpenguins
+```
+
+------------------------------------------------------------------------
+
+```{webr-r}
+head(palmerpenguins)
+```
+
+------------------------------------------------------------------------
+
+```{webr-r}
+colnames(palmerpenguins)
+```
+
+------------------------------------------------------------------------
+
+```{webr-r}
+summary(palmerpenguins)
+```
+
+------------------------------------------------------------------------
+
+### Guideline 1: Create the simplest graph that conveys the information you want to convey
+
+![](images/guideline1.jpg){width="40%"}
+
+------------------------------------------------------------------------
+
+```{webr-r}
+#| output-location: column
+ggplot(data = palmerpenguins, aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point()
+```
+
+Other ways to write the same code:
+
+```         
+ggplot(palmerpenguins, aes(bill_length_mm, body_mass_g)) +
+  geom_point()
+  
+ggplot(palmerpenguins) +
+  geom_point(aes(bill_length_mm, body_mass_g))
+```
+
+------------------------------------------------------------------------
+
+```{webr-r}
+ggplot(data = palmerpenguins, aes(x = body_mass_g)) +
+  geom_histogram()
+```
+
+------------------------------------------------------------------------
+
+Make a line plot using the `friends_info` dataset
+
+First, write the code to view the first lines of the dataset and choose your variable for the y axis (x would be a time variable)
+
+```{webr-r}
+
+```
+
+Then, write the code to make the line chart using `geom_line()`
+
+```{webr-r}
+
+```
+  
+<br>  
+<details>
+    <summary>Show answer</summary>
+    ```{webr-r}
+head(friends_info)
+```
+
+```{webr-r}
+ggplot(friends_info, aes(x = air_date, y = us_views_millions)) +  
+  geom_line()
+```
+</details>
+
+---
+
+Thanks to ggplot2's structure, we can easily add additional visualizations
+
+```{webr-r}
+ggplot(friends_info, aes(x = air_date, y = us_views_millions)) +  
+  geom_line() +
+  geom_smooth()
+```
+
+------------------------------------------------------------------------
+
+### Guideline 2: Consider the type of encoding object and attribute used to create a plot
+
+![](images/guideline2.jpg){width="40%"}
+
+------------------------------------------------------------------------
+
+First, run the code below to create a scatter plot (spatial position for encoding).\
+Then, add `color = species` inside `aes()` to add color encoding and rerun the code.\
+Then, add `shape = sex` inside `aes()` and rerun the code.
+
+```{webr-r}
+ggplot(palmerpenguins, aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point()
+```
+
+------------------------------------------------------------------------
+
+### Guideline 3: Focus on visualizing patterns or on visualizing details, depending on the purpose of the plot
+
+![](images/guideline3.jpg){width="40%"}
+
+------------------------------------------------------------------------
+
+Visualizing details
+
+```{webr-r}
+ggplot(palmerpenguins, aes(x = bill_length_mm, y = body_mass_g, color = species)) +
+  geom_point()
+```
+
+------------------------------------------------------------------------
+
+Visualizing patterns
+
+```{webr-r}
+ggplot(palmerpenguins, aes(x = species, y = body_mass_g, group = species)) +
+  geom_boxplot()
+```
+
+---
+
+Make a box plot for `friends_info`  
+Copy the code from the previous slide and paste it in the box  
+Replace `species` with `season`  
+Use `us_views_millions` for `y`
+
+```{webr-r}
+```
+<br>
+Compare to the line chart we made before
+
+```{webr-r}
+ggplot(friends_info, aes(x = air_date, y = us_views_millions)) +  
+  geom_line()
+```
+
+------------------------------------------------------------------------
+
+A good way to easily see patterns is a heatmap
+
+```{webr-r}
+ggplot(friends_info, aes(x = episode, y = season, fill = imdb_rating)) +
+  geom_tile()
+```
+
+---
+
+### Guideline 4: Select meaningful axis ranges
+
+![](images/guideline4.jpg){width="40%"}
+
+------------------------------------------------------------------------
+
+ggplot2 automatically adjusts the axes depending on variable values
+
+```{webr-r}
+ggplot(friends_info, aes(x = air_date, y = us_views_millions)) +  
+  geom_line()
+```
+
+------------------------------------------------------------------------
+
+But we can change them!  
+Run the code  
+Then, add `limits = c(0, 100)` inside `scale_y_continuous()` and rerun the code  
+Change the numbers and see what happens to the line
+
+```{webr-r}
+ggplot(friends_info, aes(x = air_date, y = us_views_millions)) +  
+  geom_line() +
+  scale_y_continuous()
+```
+
+------------------------------------------------------------------------
+
+### Guideline 5: Data transformations and carefully chosen graph aspect ratios can be used to emphasize rates of change for time-series data
+
+![](images/guideline5.jpg){width="40%"}
+
+---
+
+Let's look at ggplot2's [mammals sleep dataset](https://ggplot2.tidyverse.org/reference/msleep.html)   
+It's hard to see the points close to 0 with continuous scales
+
+```{webr-r}
+ggplot(msleep, aes(x = bodywt, y = brainwt, size = sleep_total, color = vore)) +
+  geom_point() +
+  labs(
+    x = "Body weight (kg)",
+    y = "Brain weight (kg)",
+    size = "Total amount of sleep (hours)"
+  )
+```
+
+---
+
+Let's see the distribution of body weight
+
+```{webr-r}
+ggplot(msleep, aes(x = bodywt)) +
+  geom_histogram()
+```
+
+---
+
+We can use logarithmic scales for both x and y
+
+```{webr-r}
+# "Turn off" scientific notation for axis numbers
+options(scipen = 1000)
+
+ggplot(msleep, aes(x = bodywt, y = brainwt, size = sleep_total, color = vore)) +
+  geom_point() +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(
+    x = "Body weight (kg)",
+    y = "Brain weight (kg)",
+    size = "Total amount of sleep (hours)"
+  )
+```
+
+Remove either the line with `scale_x_log10()` or `scale_y_log10()` and rerun the code
+
+---
+
+### Guideline 6: Plot overlapping points in a way that density differences become apparent in scatter plots
+
+![](images/guideline6.jpg)
+
+---
+
+Let's plot `imdb_rating` and `us_views_millions` from `friends_info` with really big points so that they overlap a lot
+
+```{webr-r}
+ggplot(friends_info, aes(imdb_rating, us_views_millions)) +
+  geom_point(size = 5)
+```
+
+---
+
+We can reduce the opacity of the points by using a lower alpha value  
+The maximum value is 1 (default) and the lowest is 0  
+Add `alpha = 0.5` inside `geom_point()` and run the code  
+Try out different values and rerun the code
+
+```{webr-r}
+ggplot(friends_info, aes(imdb_rating, us_views_millions)) +
+  geom_point(size = 5, alpha = 0.5)
+```
