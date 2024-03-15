@@ -1,5 +1,5 @@
 ---
-title: ggplot2 workshop
+title: ISR ggplot2 workshop
 subtitle: Georgios Karamanis
 format: 
   revealjs:
@@ -303,5 +303,5 @@ Try out different values and rerun the code
 
 ```{webr-r}
 ggplot(friends_info, aes(imdb_rating, us_views_millions)) +
-  geom_point(size = 5, alpha = 0.5)
+  geom_point(size = 5)
 ```
