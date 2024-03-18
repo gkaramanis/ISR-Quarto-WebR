@@ -39,6 +39,7 @@ palmerpenguins <- read.csv("https://raw.githubusercontent.com/rfordatascience/ti
 friends_info <- read.csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-08/friends_info.csv')
 
 friends_info$air_date <- as.Date(friends_info$air_date)
+friends_info$season <- as.factor(friends_info$season)
 ```
 
 ------------------------------------------------------------------------
@@ -309,3 +310,48 @@ Try out different values and rerun the code
 ggplot(friends_info, aes(imdb_rating, us_views_millions)) +
   geom_point(size = 5)
 ```
+
+---
+
+### Pitfall: Vertical axis text
+
+---
+
+Run the code and see how the labels on the x axis overlap  
+Change the `angle` in the last line to rotate the text and rerun the code  
+Set the `angle` back to 0 and then switch the `x` and `y` variables  
+Rerun the code  
+
+```{webr-r}
+ggplot(friends_info) +
+  geom_boxplot(aes(x = directed_by, y = imdb_rating)) +
+  theme(axis.text.x = element_text(angle = 0))
+```
+
+---
+
+### Pitfall: Rainbow color scale
+
+---
+
+Run the code to see a heatmap with the default rainbow scale in R  
+
+```{webr-r}
+ggplot(friends_info) +
+  geom_tile(aes(x = episode, y = season, fill = imdb_rating)) +
+  scale_fill_gradientn(colors = rainbow(7))
+```
+
+---
+
+Run the code to see a better rainbow scale  
+Replace `turbo` with one of the other scale names: viridis, magma, plasma, mako  
+Rerun the code  
+
+```{webr-r}
+ggplot(friends_info) +
+  geom_tile(aes(x = episode, y = season, fill = imdb_rating)) +
+    scale_fill_viridis_c(option = "turbo")
+```
+
+---
