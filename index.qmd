@@ -8,6 +8,8 @@ format:
     code-overflow: wrap
     smaller: true
     scrollable: true
+    controls: true
+    controls-layout: bottom-right
 execute: 
   freeze: auto
 filters:
@@ -297,7 +299,7 @@ ggplot(friends_info, aes(imdb_rating, us_views_millions)) +
 ---
 
 We can reduce the opacity of the points by using a lower alpha value  
-The maximum value is 1 (default) and the lowest is 0  
+The highest value is 1 (default) and the lowest is 0  
 Add `alpha = 0.5` inside `geom_point()` and run the code  
 Try out different values and rerun the code
 
