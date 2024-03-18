@@ -355,3 +355,5 @@ ggplot(friends_info) +
 ```
 
 ---
+
+![](images/fireworks.gif)
