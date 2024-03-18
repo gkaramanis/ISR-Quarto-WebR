@@ -1,6 +1,6 @@
 ---
 title: ISR ggplot2 workshop
-subtitle: Georgios Karamanis
+# subtitle: Georgios Karamanis
 format: 
   revealjs:
     header-includes: '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Sofia+Sans+Extra+Condensed:ital,wght@0,1..1000;1,1..1000&display=swap" rel="stylesheet">'
@@ -10,6 +10,8 @@ format:
     scrollable: true
     controls: true
     controls-layout: bottom-right
+    slide-number: c/t
+    footer: ISR ggplot2 workshop · Georgios Karamanis
 execute: 
   freeze: auto
 filters:
